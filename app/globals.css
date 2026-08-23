@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
+    background-color: #fff8f2;
+    color: #1e1b16;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  display: none;
+}
