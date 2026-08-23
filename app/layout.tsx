@@ -29,9 +29,9 @@ export default function RootLayout({
       <body className="bg-[#fff8f2] text-[#1e1b16] antialiased">
         <AuthProvider>
           <Sidebar />
-          <div className="pl-[280px] flex flex-col min-h-screen">
+          <div className="lg:pl-[280px] pl-0 flex flex-col min-h-screen transition-all duration-300">
             <Header />
-            <main className="relative pt-20 flex-1 w-full max-w-[1280px] mx-auto px-8 py-10">
+            <main className="relative pt-20 sm:pt-24 flex-1 w-full max-w-[1280px] mx-auto px-4 sm:px-8 py-6 sm:py-10">
               {children}
             </main>
           </div>
@@ -40,4 +40,3 @@ export default function RootLayout({
     </html>
   );
 }
-

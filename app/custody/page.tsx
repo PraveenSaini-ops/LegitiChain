@@ -61,17 +61,17 @@ export default function CustodyLogPage() {
   };
 
   return (
-    <div className="flex flex-col w-full max-w-5xl mx-auto gap-8">
-      <div className="flex justify-between items-end">
+    <div className="flex flex-col w-full max-w-5xl mx-auto gap-6 sm:gap-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-[#2D2926] tracking-tight mb-2">Chain of Custody Audit Trail</h1>
-          <p className="text-[#414942] text-sm">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#2D2926] tracking-tight mb-2">Chain of Custody Audit Trail</h1>
+          <p className="text-[#414942] text-xs sm:text-sm">
             Complete, timestamped custody log tracking physical & digital evidence transfers with cryptographic proof.
           </p>
         </div>
         <button
           onClick={() => setShowTransferModal(true)}
-          className="px-5 py-2.5 bg-[#002411] text-white rounded-lg text-xs font-semibold uppercase tracking-widest hover:bg-[#063b21] transition-colors shadow-sm flex items-center gap-2"
+          className="w-full sm:w-auto px-5 py-2.5 bg-[#002411] text-white rounded-lg text-xs font-semibold uppercase tracking-widest hover:bg-[#063b21] transition-colors shadow-sm flex items-center justify-center gap-2 shrink-0"
         >
           <span className="material-symbols-outlined text-[18px]">swap_horiz</span>
           Log Transfer Event
@@ -88,7 +88,7 @@ export default function CustodyLogPage() {
       {/* Transfer Modal */}
       {showTransferModal && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-white border border-[#E5E0D5] rounded-xl p-6 w-full max-w-lg shadow-xl flex flex-col gap-4">
+          <div className="bg-white border border-[#E5E0D5] rounded-xl p-5 sm:p-6 w-full max-w-lg shadow-xl flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center border-b border-[#E5E0D5] pb-3">
               <h3 className="font-bold text-[#2D2926]">Log Custodial Transfer</h3>
               <button onClick={() => setShowTransferModal(false)} className="text-[#717972] hover:text-[#2D2926]">
@@ -121,7 +121,7 @@ export default function CustodyLogPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="font-semibold text-[#2D2926] block mb-1">From Entity / Station</label>
                   <input
@@ -184,7 +184,7 @@ export default function CustodyLogPage() {
       )}
 
       {/* Custody Log Timeline */}
-      <div className="bg-white border border-[#E5E0D5] rounded-xl shadow-sm overflow-hidden p-6">
+      <div className="bg-white border border-[#E5E0D5] rounded-xl shadow-sm overflow-hidden p-4 sm:p-6">
         {isLoading ? (
           <div className="py-12 text-center text-xs font-mono text-[#717972]">
             <span className="material-symbols-outlined animate-spin text-[24px] mb-2 block">sync</span>
@@ -205,37 +205,37 @@ export default function CustodyLogPage() {
             </button>
           </div>
         ) : (
-          <div className="relative before:absolute before:inset-y-0 before:left-[21px] before:w-[2px] before:bg-[#E5E0D5] flex flex-col gap-6">
+          <div className="relative before:absolute before:inset-y-0 before:left-[19px] sm:before:left-[21px] before:w-[2px] before:bg-[#E5E0D5] flex flex-col gap-6">
             {custodyEvents.map((evt) => (
-              <div key={evt.id || evt.timestamp} className="relative pl-12">
-                <div className="absolute left-0 top-1 w-10 h-10 rounded-full bg-[#f3dfd0] flex items-center justify-center border-4 border-white z-10 text-[#241911]">
-                  <span className="material-symbols-outlined text-[20px]">swap_horiz</span>
+              <div key={evt.id || evt.timestamp} className="relative pl-10 sm:pl-12">
+                <div className="absolute left-0 top-1 w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-[#f3dfd0] flex items-center justify-center border-4 border-white z-10 text-[#241911]">
+                  <span className="material-symbols-outlined text-[18px] sm:text-[20px]">swap_horiz</span>
                 </div>
 
-                <div className="bg-[#fff8f2] border border-[#E5E0D5] rounded-lg p-5">
-                  <div className="flex justify-between items-start mb-2">
+                <div className="bg-[#fff8f2] border border-[#E5E0D5] rounded-lg p-3.5 sm:p-5">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
                     <div>
-                      <span className="font-mono text-xs font-bold text-[#002411] bg-[#baefc9] px-2 py-0.5 rounded mr-2">
+                      <span className="font-mono text-xs font-bold text-[#002411] bg-[#baefc9] px-2 py-0.5 rounded mr-2 inline-block mb-1 sm:mb-0">
                         {evt.evidence_id}
                       </span>
-                      <span className="font-semibold text-[#2D2926] text-sm">{evt.action}</span>
+                      <span className="font-semibold text-[#2D2926] text-xs sm:text-sm">{evt.action}</span>
                     </div>
-                    <span className="font-mono text-xs text-[#717972]">
+                    <span className="font-mono text-[11px] sm:text-xs text-[#717972]">
                       {evt.timestamp ? new Date(evt.timestamp).toLocaleString() : "Just now"}
                     </span>
                   </div>
 
-                  <div className="text-xs text-[#414942] my-2">
+                  <div className="text-xs text-[#414942] my-2 flex flex-wrap items-center gap-1">
                     <span className="font-semibold text-[#2D2926]">{evt.from_entity}</span>
-                    <span className="mx-2 text-[#717972]">→</span>
+                    <span className="text-[#717972]">→</span>
                     <span className="font-semibold text-[#2D2926]">{evt.to_entity}</span>
                   </div>
 
-                  <div className="bg-[#f4ede4] p-3 rounded border border-[#E5E0D5] flex justify-between items-center text-xs font-mono mt-3">
-                    <span className="text-[#414942]">
+                  <div className="bg-[#f4ede4] p-3 rounded border border-[#E5E0D5] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs font-mono mt-3">
+                    <span className="text-[#414942] break-all">
                       Reference: <strong className="text-[#2D2926]">{evt.tx_id || "STORAGE_RECORD"}</strong>
                     </span>
-                    <span className="text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded font-bold text-[10px] uppercase">
+                    <span className="text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded font-bold text-[10px] uppercase shrink-0">
                       ON-CHAIN: PENDING
                     </span>
                   </div>
