@@ -56,18 +56,32 @@ ALTER TABLE public.ai_risk_signals ENABLE ROW LEVEL SECURITY;
 
 -- 5. Helper function to check role of current user
 CREATE OR REPLACE FUNCTION public.get_user_role(user_id UUID)
-RETURNS TEXT AS $$
+RETURNS TEXT 
+LANGUAGE plpgsql
+SECURITY INVOKER
+SET search_path = public
+AS $$
 DECLARE
     u_role TEXT;
 BEGIN
     SELECT role INTO u_role FROM public.profiles WHERE id = user_id;
     RETURN COALESCE(u_role, 'GUEST');
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
+
+-- Restrict execution permissions on get_user_role
+REVOKE ALL ON FUNCTION public.get_user_role(UUID) FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.get_user_role(UUID) FROM anon;
+GRANT EXECUTE ON FUNCTION public.get_user_role(UUID) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.get_user_role(UUID) TO service_role;
 
 -- 6. Trigger to automatically handle new user signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER 
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
 BEGIN
     INSERT INTO public.profiles (id, email, full_name, organization, role)
     VALUES (
@@ -84,7 +98,14 @@ BEGIN
         role = EXCLUDED.role;
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
+
+-- Restrict execution permissions on handle_new_user (internal trigger only)
+REVOKE ALL ON FUNCTION public.handle_new_user() FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.handle_new_user() FROM anon;
+REVOKE ALL ON FUNCTION public.handle_new_user() FROM authenticated;
+GRANT EXECUTE ON FUNCTION public.handle_new_user() TO postgres;
+GRANT EXECUTE ON FUNCTION public.handle_new_user() TO service_role;
 
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created

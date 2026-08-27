@@ -28,8 +28,8 @@ CREATE POLICY "Allow authenticated insert access to custody logs"
 
 -- 4. Ensure storage policies for 'evidence-files' bucket allow authenticated upload
 INSERT INTO storage.buckets (id, name, public)
-VALUES ('evidence-files', 'evidence-files', true)
-ON CONFLICT (id) DO NOTHING;
+VALUES ('evidence-files', 'evidence-files', false)
+ON CONFLICT (id) DO UPDATE SET public = false;
 
 DROP POLICY IF EXISTS "Authenticated Upload Access to Evidence Files" ON storage.objects;
 
